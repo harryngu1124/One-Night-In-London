@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Night in London</title>
+  <style>
+    :root{
+      --gold:#b7791f;
+      --deep:#171717;
+      --cream:#fffaf0;
+      --panel:rgba(255,250,240,0.96);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: Georgia, "Times New Roman", serif;
+      color:var(--deep);
+      background:#efe6d6;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+    .page{
+      position:relative;
+      width:min(100vw, 760px);
+      min-height:100vh;
+      background-image:
+        linear-gradient(rgba(255,255,255,.06),rgba(255,255,255,.06)),
+        url("background.png");
+      background-size:cover;
+      background-position:center top;
+      background-repeat:no-repeat;
+      padding:28px 18px 48px;
+      overflow:hidden;
+    }
+    .veil{
+      position:absolute;
+      inset:0;
+      background:rgba(255,248,236,0.16);
+      pointer-events:none;
+    }
+    .content{
+      position:relative;
+      z-index:2;
+      max-width:620px;
+      margin:230px auto 0;
+      background:var(--panel);
+      border:1px solid rgba(183,121,31,.8);
+      outline:1px solid rgba(183,121,31,.35);
+      outline-offset:6px;
+      padding:30px 20px 28px;
+      text-align:center;
+      box-shadow:0 8px 28px rgba(0,0,0,.08);
+    }
+    .lock{
+      font-size:46px;
+      margin-bottom:8px;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(25px,5vw,38px);
+      letter-spacing:.18em;
+      font-weight:500;
+    }
+    .sub{
+      margin-top:8px;
+      font-size:clamp(16px,3.5vw,24px);
+      letter-spacing:.12em;
+    }
+    .rule{
+      width:120px;
+      height:1px;
+      background:var(--gold);
+      margin:18px auto;
+      position:relative;
+    }
+    .rule:after{
+      content:"◆";
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      background:var(--cream);
+      color:var(--gold);
+      padding:0 8px;
+      font-size:11px;
+    }
+    .unlock-label{
+      color:var(--gold);
+      letter-spacing:.12em;
+      font-size:15px;
+      margin-bottom:6px;
+    }
+    .unlock-date{
+      font-size:clamp(19px,4vw,28px);
+      letter-spacing:.07em;
+    }
+    .timezone{
+      margin-top:6px;
+      color:#6f5124;
+      letter-spacing:.12em;
+      font-size:13px;
+    }
+    .countdown{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin-top:24px;
+    }
+    .box{
+      border:1px solid var(--gold);
+      background:rgba(255,255,255,.72);
+      padding:14px 5px 12px;
+      min-width:0;
+    }
+    .num{
+      font-size:clamp(30px,7vw,48px);
+      line-height:1;
+    }
+    .lab{
+      margin-top:7px;
+      font-size:11px;
+      letter-spacing:.14em;
+      color:#6f5124;
+    }
+    .tease{
+      margin-top:24px;
+      color:#4b3820;
+      letter-spacing:.13em;
+      font-size:13px;
+    }
+    #unlocked{
+      display:none;
+    }
+    .unlocked-title{
+      color:var(--gold);
+      font-size:15px;
+      letter-spacing:.15em;
+      margin-bottom:12px;
+    }
+    .question{
+      font-size:clamp(28px,6vw,42px);
+      line-height:1.25;
+      margin:8px auto 0;
+      max-width:520px;
+    }
+    .reveal{
+      animation:reveal .9s ease both;
+    }
+    @keyframes reveal{
+      from{opacity:0; transform:translateY(10px) scale(.985)}
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
+    @media (max-width:520px){
+      .page{padding-left:12px;padding-right:12px}
+      .content{margin-top:170px;padding:24px 12px}
+      .countdown{gap:6px}
+      .box{padding:12px 2px 10px}
+      .lab{font-size:9px;letter-spacing:.08em}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="veil"></div>
+
+    <section class="content" aria-live="polite">
+      <div id="locked">
+        <div class="lock">🔒</div>
+        <h1>THE SECRET</h1>
+        <div class="sub">REMAINS SEALED</div>
+        <div class="rule"></div>
+
+        <div class="unlock-label">UNLOCKS ON</div>
+        <div class="unlock-date">29 AUGUST 2026 · 5:30 PM</div>
+        <div class="timezone">SINGAPORE TIME</div>
+
+        <div class="countdown">
+          <div class="box"><div class="num" id="days">00</div><div class="lab">DAYS</div></div>
+          <div class="box"><div class="num" id="hours">00</div><div class="lab">HRS</div></div>
+          <div class="box"><div class="num" id="mins">00</div><div class="lab">MINS</div></div>
+          <div class="box"><div class="num" id="secs">00</div><div class="lab">SECS</div></div>
+        </div>
+
+        <div class="tease">SOMETHING SPECIAL AWAITS YOU</div>
+      </div>
+
+      <div id="unlocked" class="reveal">
+        <div class="lock">🔓</div>
+        <div class="unlocked-title">UNLOCKED</div>
+        <div class="rule"></div>
+        <div class="unlocked-title">YOUR QUESTION</div>
+        <div class="question">What is the moving date of 203D?</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // 29 Aug 2026, 5:30 PM Singapore Time (UTC+8)
+    const unlockTime = new Date("2026-08-29T17:30:00+08:00").getTime();
+
+    const locked = document.getElementById("locked");
+    const unlocked = document.getElementById("unlocked");
+
+    function pad(n){ return String(n).padStart(2,"0"); }
+
+    function updateCountdown(){
+      const now = Date.now();
+      const diff = unlockTime - now;
+
+      if(diff <= 0){
+        locked.style.display = "none";
+        unlocked.style.display = "block";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+
+      document.getElementById("days").textContent = pad(days);
+      document.getElementById("hours").textContent = pad(hours);
+      document.getElementById("mins").textContent = pad(mins);
+      document.getElementById("secs").textContent = pad(secs);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
