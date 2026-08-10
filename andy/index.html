@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Night in London</title>
+  <style>
+    :root{
+      --gold:#b27a22;
+      --gold-dark:#8b5e17;
+      --ink:#171717;
+      --cream:#fbf5e9;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      margin:0;
+      min-height:100%;
+      background:#eee4d2;
+      color:var(--ink);
+      font-family:Georgia,"Times New Roman",serif;
+    }
+
+    body{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+
+    .poster{
+      position:relative;
+      width:min(100vw,720px);
+      aspect-ratio:2/3;
+      background:url("background.png") center/100% 100% no-repeat;
+      overflow:hidden;
+      container-type:inline-size;
+    }
+
+    /* Live content aligned to the inner gold panel of the artwork */
+    .live-panel{
+      position:absolute;
+      left:22.15%;
+      top:34.75%;
+      width:56.8%;
+      height:48.1%;
+      background:rgba(251,245,233,.985);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:4.2% 4.5% 4.0%;
+      overflow:hidden;
+    }
+
+    .inner{
+      width:100%;
+      margin:0 auto;
+      text-align:center;
+    }
+
+    /* Properly centered CSS padlock */
+    .gold-lock{
+      width:8.2cqw;
+      height:7.2cqw;
+      max-width:58px;
+      max-height:52px;
+      min-width:36px;
+      min-height:32px;
+      margin:0 auto 2.4cqw;
+      position:relative;
+      border:0.42cqw solid var(--gold-dark);
+      border-radius:0.8cqw;
+      background:linear-gradient(#c9953d,#a86f1e);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
+    }
+
+    .gold-lock::before{
+      content:"";
+      position:absolute;
+      width:58%;
+      height:62%;
+      left:50%;
+      top:-57%;
+      transform:translateX(-50%);
+      border:0.62cqw solid var(--gold-dark);
+      border-bottom:0;
+      border-radius:999px 999px 0 0;
+    }
+
+    .gold-lock::after{
+      content:"";
+      position:absolute;
+      width:11%;
+      height:29%;
+      left:50%;
+      top:34%;
+      transform:translateX(-50%);
+      border-radius:999px;
+      background:#2a2115;
+    }
+
+    h1{
+      margin:0;
+      font-weight:500;
+      font-size:4.8cqw;
+      letter-spacing:.13em;
+      line-height:1.1;
+    }
+
+    .subtitle{
+      margin-top:0.8cqw;
+      font-size:3.0cqw;
+      letter-spacing:.09em;
+      line-height:1.15;
+    }
+
+    .rule{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:1.4cqw;
+      margin:2.1cqw auto;
+      color:var(--gold);
+    }
+
+    .rule::before,
+    .rule::after{
+      content:"";
+      width:8cqw;
+      height:1px;
+      background:var(--gold);
+    }
+
+    .diamond{
+      font-size:1.4cqw;
+    }
+
+    .unlock-label{
+      color:var(--gold-dark);
+      letter-spacing:.10em;
+      font-size:2.0cqw;
+      line-height:1.1;
+    }
+
+    /* Key fix: smaller, centered, never allowed outside the panel */
+    .unlock-date{
+      width:100%;
+      margin:1.3cqw auto 0;
+      padding:0 0.4cqw;
+      font-size:3.15cqw;
+      line-height:1.12;
+      letter-spacing:0;
+      white-space:nowrap;
+      text-align:center;
+    }
+
+    .timezone{
+      margin-top:0.9cqw;
+      font-size:1.75cqw;
+      letter-spacing:.11em;
+      color:#5f4727;
+      line-height:1.1;
+    }
+
+    .countdown{
+      width:100%;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:1.2cqw;
+      margin:3.2cqw auto 0;
+    }
+
+    .timebox{
+      min-width:0;
+      border:1px solid var(--gold);
+      padding:1.6cqw 0.3cqw 1.25cqw;
+      background:rgba(255,255,255,.30);
+      text-align:center;
+    }
+
+    .num{
+      font-size:4.8cqw;
+      line-height:1;
+    }
+
+    .lab{
+      margin-top:0.9cqw;
+      font-size:1.25cqw;
+      letter-spacing:.06em;
+      color:#57401f;
+      white-space:nowrap;
+    }
+
+    .key{
+      margin-top:2.7cqw;
+      font-size:3.8cqw;
+      color:var(--gold-dark);
+      line-height:1;
+      text-align:center;
+    }
+
+    .tease{
+      width:100%;
+      margin:2.0cqw auto 0;
+      font-size:1.7cqw;
+      letter-spacing:.08em;
+      line-height:1.2;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    #unlocked{display:none}
+
+    .unlocked-tag{
+      color:var(--gold-dark);
+      letter-spacing:.12em;
+      font-size:2.2cqw;
+      text-align:center;
+    }
+
+    .question{
+      width:100%;
+      margin:2.2cqw auto 0;
+      font-size:4.0cqw;
+      line-height:1.25;
+      text-align:center;
+    }
+
+    .reveal{
+      animation:reveal .9s ease both;
+    }
+
+    @keyframes reveal{
+      from{opacity:0;transform:translateY(8px) scale(.99)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    @media (max-width:520px){
+      .live-panel{
+        left:21.30%;
+        width:57.40%;
+        top:34.15%;
+        height:48.30%;
+        padding-left:3.8%;
+        padding-right:3.8%;
+      }
+
+      .inner{
+        width:100%;
+        margin:0 auto;
+        transform:translateY(-0.35cqw);
+      }
+
+      .unlock-date{
+        font-size:3.05cqw;
+      }
+
+      .tease{
+        font-size:1.55cqw;
+      }
+    }
+  
+    @media (max-width:520px){
+      body{
+        min-height:100dvh;
+        align-items:center;
+      }
+
+      .poster{
+        flex:0 0 auto;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <main class="poster">
+    <section class="live-panel" aria-live="polite">
+      <div class="inner">
+
+        <div id="locked">
+          <div class="gold-lock" aria-hidden="true"></div>
+
+          <h1>THE SECRET</h1>
+          <div class="subtitle">REMAINS SEALED</div>
+
+          <div class="rule"><span class="diamond">◆</span></div>
+
+          <div class="unlock-label">UNLOCKS ON</div>
+          <div class="unlock-date">29 AUGUST 2026 · 5:30 PM</div>
+          <div class="timezone">SINGAPORE TIME</div>
+
+          <div class="countdown">
+            <div class="timebox">
+              <div class="num" id="days">00</div>
+              <div class="lab">DAYS</div>
+            </div>
+            <div class="timebox">
+              <div class="num" id="hours">00</div>
+              <div class="lab">HRS</div>
+            </div>
+            <div class="timebox">
+              <div class="num" id="mins">00</div>
+              <div class="lab">MINS</div>
+            </div>
+            <div class="timebox">
+              <div class="num" id="secs">00</div>
+              <div class="lab">SECS</div>
+            </div>
+          </div>
+
+          <div class="key">⚿</div>
+          <div class="tease">SOMETHING SPECIAL AWAITS YOU.</div>
+        </div>
+
+        <div id="unlocked" class="reveal">
+          <div class="gold-lock" aria-hidden="true"></div>
+          <div class="unlocked-tag">UNLOCKED</div>
+
+          <div class="rule"><span class="diamond">◆</span></div>
+
+          <div class="unlocked-tag">YOUR QUESTION</div>
+          <div class="question">What is the moving date of 203D?</div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // 29 August 2026, 5:30 PM Singapore Time (UTC+8)
+    const unlockTime = new Date("2026-08-29T17:30:00+08:00").getTime();
+
+    const locked = document.getElementById("locked");
+    const unlocked = document.getElementById("unlocked");
+
+    function pad(n){
+      return String(n).padStart(2,"0");
+    }
+
+    function updateCountdown(){
+      const diff = unlockTime - Date.now();
+
+      if(diff <= 0){
+        locked.style.display = "none";
+        unlocked.style.display = "block";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff/1000);
+      const days = Math.floor(totalSeconds/86400);
+      const hours = Math.floor((totalSeconds%86400)/3600);
+      const mins = Math.floor((totalSeconds%3600)/60);
+      const secs = totalSeconds%60;
+
+      document.getElementById("days").textContent = pad(days);
+      document.getElementById("hours").textContent = pad(hours);
+      document.getElementById("mins").textContent = pad(mins);
+      document.getElementById("secs").textContent = pad(secs);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown,1000);
+  </script>
+</body>
+</html>
